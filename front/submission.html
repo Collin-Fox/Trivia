@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Choice Form</title>
+</head>
+<body>
+<h1>Multiple Choice Quiz</h1>
+<form id="myForm" action="submission.html" method="get">
+</form>
+<script>
+    const form = document.getElementById('myForm');
+    const numQuestions = 16; // Change this to adjust the number of questions
+
+    for (let i = 1; i <= numQuestions; i++) {
+        // Create label element
+        const label = document.createElement('label');
+        label.textContent = `Question ${i}:`;
+        label.for = `question${i}`;
+        form.appendChild(label);
+
+        // Create select element (dropdown)
+        const select = document.createElement('select');
+        select.name = `question${i}`;
+        select.id = `question${i}`;
+        form.appendChild(select);
+
+        // Create option elements (A, B, C, D)
+        for (const optionValue of ['A', 'B', 'C', 'D']) {
+            const option = document.createElement('option');
+            option.value = optionValue;
+            option.textContent = optionValue;
+            select.appendChild(option);
+        }
+
+        // Add a line break after each question
+        const br = document.createElement('br');
+        form.appendChild(br);
+    }
+
+    // Add submit button (optional)
+    const submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Submit Answers';
+    form.appendChild(submitButton);
+</script>
+</body>
+</html>
