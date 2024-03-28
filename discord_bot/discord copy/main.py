@@ -54,9 +54,6 @@ async def send_message(message: Message, user_message: str) -> None:
         elif user_message == "/speak":
             await talkToVoice(message, False)
             response: str = "OK"
-        elif user_message == "/horn":
-            await talkToVoice(message, True)
-            response: str = "French"
         elif is_chat:
             response: str = talk(user_message)
         elif is_image:
@@ -100,8 +97,7 @@ async def talkToVoice(message: Message, chase):
         except:
             vc = client.voice_clients[0]
             print(vc)
-
-        speak(choice(["Hey pig"]) + choice(["you are a cunt el oh el"]))
+        speak("Hello World", 0)
         if vc.is_playing():
             vc.stop()
 
