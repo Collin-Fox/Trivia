@@ -1,21 +1,24 @@
 package collin.fox.Trivia.Answer;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Answer {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int AnswerID;
-    private int QuestionID;
-    private int PlayerID;
+    private String QuestionID;
+    private String PlayerID;
     private int GameID;
     private String PlayersAnswer;
 
     public Answer() {
     }
 
-    public Answer(int answerID, int questionID, int playerID, int gameID, String playersAnswer) {
+    public Answer(int answerID, String questionID, String playerID, int gameID, String playersAnswer) {
         AnswerID = answerID;
         QuestionID = questionID;
         PlayerID = playerID;
@@ -31,19 +34,19 @@ public class Answer {
         AnswerID = answerID;
     }
 
-    public int getQuestionID() {
+    public String getQuestionID() {
         return QuestionID;
     }
 
-    public void setQuestionID(int questionID) {
+    public void setQuestionID(String questionID) {
         QuestionID = questionID;
     }
 
-    public int getPlayerID() {
+    public String getPlayerID() {
         return PlayerID;
     }
 
-    public void setPlayerID(int playerID) {
+    public void setPlayerID(String playerID) {
         PlayerID = playerID;
     }
 
