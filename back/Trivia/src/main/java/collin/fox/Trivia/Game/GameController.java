@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -202,6 +203,49 @@ public class GameController {
         return htmlBegin;
     }
 
+
+    @GetMapping("/scoreUser")
+    public String scoreUserGame(@CookieValue("username") String username, @CookieValue("gameID") int gameID) {
+        int score = 0;
+        //Need to get the player
+        String scoreBoard = "";
+        if (!playerRepository.existsById(username)) return "PLAYER " + username + " DOES NOT EXIST";
+        Player p = playerRepository.findById(username).get();
+        //Display the users name on the scoreboard
+        scoreBoard += "PLAYER: " + username + "<br>";
+        //Get a list of all the questions
+        ArrayList<Question> gameQuestions = (ArrayList<Question>) questionRepository.getQuestionsByGameID(gameID);
+        if (gameQuestions.isEmpty()) return "THIS GAME HAS NO ANSWERS";
+
+        for (Question q : gameQuestions) {
+            //Get the players answer
+            Optional<Answer> answer = answerRepository.findAnswerByPlayerIDAndQuestionID(username, q.getQuestionID());
+            //If it exists...
+            if (answer.isEmpty()) return "THIS QUESTION WAS NEVER ANSWERED SOMEHOW " + q.getQ();
+            Answer a = answer.get();
+            //Show the question plus the correct answer
+            scoreBoard += "QUESTION: " + q.getQ() + "<br>" + "CORRECT ANSWER: " + q.getCorrect() + "<br>";
+
+            //if the player was right
+            if (a.getPlayersAnswer().equals(q.getCorrect())) {
+                // Increase the players score
+                score += 20;
+
+            }
+            scoreBoard += "YOUR ANSWER: " + a.getPlayersAnswer() + "<br>";
+
+            scoreBoard += "<br> + <br>";
+
+
+        }
+
+        //Update the players score
+        p.setScore(score);
+        playerRepository.save(p);
+
+        scoreBoard += "TOTAL SCORE: " + score + "<br>";
+        return scoreBoard;
+    }
     //Delete all questions for games that are finished
 
 }

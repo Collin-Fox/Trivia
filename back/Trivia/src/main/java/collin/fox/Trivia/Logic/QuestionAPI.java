@@ -74,13 +74,19 @@ public class QuestionAPI {
             JSONObject obj = (JSONObject) o;
             String category = obj.getString("category");
             String answer = obj.getString("correctAnswer");
+            answer = answer.replaceAll("\"", "");
             JSONArray incArray = obj.getJSONArray("incorrectAnswers");
             JSONObject question = obj.getJSONObject("question");
             String id = obj.getString("id");
             String ques = question.getString("text");
+            ques = ques.replaceAll("\"", "");
             String a = incArray.getString(0);
             String b = incArray.getString(1);
             String c = incArray.getString(2);
+            a = a.replaceAll("\"", "");
+            b = b.replaceAll("\"", "");
+            c = c.replaceAll("\"", "");
+
             String script = getScript(ques, answer, a, b, c);
             //  JSONArray incorrectList = obj.getJSONArray("incorrectAnswers");
 
@@ -99,7 +105,7 @@ public class QuestionAPI {
 
             gameQuestions.add(temp);
         }
-        JSONObject obj =  jArray.getJSONObject(0);
+
         return gameQuestions;
     }
 }
