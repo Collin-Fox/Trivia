@@ -20,10 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 @RestController
 @RequestMapping("/game")
@@ -135,11 +132,12 @@ public class GameController {
         //for every player answer
         for(String q : answerArray){
             //Get the question
-            Optional<Question> temp = questionRepository.getQuestionByAnswer(q);
+            Optional<List<Question>> tmp = questionRepository.getQuestionByAnswer(q);
+            List<Question> temp = tmp.get();
 
             //If it found the question
-            if(temp.isPresent()){
-                Question question = temp.get();
+            if(!temp.isEmpty()){
+                Question question = temp.get(0);
 
                 //Build the answer
                 Answer answer = new Answer();
@@ -156,11 +154,10 @@ public class GameController {
             }
         }
 
+        String s = scoreUserGame(username, gameID);
 
 
-
-
-        return "Answers Saved";
+        return s;
     }
 
     //Write the html form for the game questions
@@ -182,13 +179,32 @@ public class GameController {
                 "<body>";
         htmlBegin += "<form id=\"submitForm\" action=\"submit.html\" method=\"get\">\n";
         int counter = 1;
+
+
+        Random rand = new Random();
+        List<String> givenList = new ArrayList<>();
+
+
+
         for(Question q : gameQuestions){
-            htmlBegin += "<label for=\"question" + counter + "\">Question" + counter + ": " + q.getQ() + ":</label><br>\n";
+            givenList.add(q.getCorrect());
+            givenList.add(q.getIncA()); givenList.add(q.getIncB()); givenList.add(q.getIncC());
+            String[] rnd = new String[4];
+
+            int numberOfElements = 4;
+
+            for (int i = 0; i < numberOfElements; i++) {
+                int randomIndex = rand.nextInt(givenList.size());
+                String randomElement = givenList.get(randomIndex);
+                givenList.remove(randomIndex);
+                rnd[i] = randomElement;
+            }
+            htmlBegin += "<label for=\"question" + counter + "\">Question" + counter + ": " + ":</label><br>\n";
             htmlBegin += "<select id= \"question" + counter + "\" name = \"question" + counter + "\"><br>\n";
-            htmlBegin += "<option value =\"" + q.getCorrect() + "\">" + q.getCorrect() + "</option>\n";
-            htmlBegin += "<option value =\"" + q.getIncA() + "\">" + q.getIncA() + "</option>\n";
-            htmlBegin += "<option value =\"" + q.getIncB() + "\">" + q.getIncB() + "</option>\n";
-            htmlBegin += "<option value =\"" + q.getIncC() + "\">" + q.getIncC() + "</option>\n";
+            htmlBegin += "<option value =\"" + rnd[0] + "\">" + rnd[0] + "</option>\n";
+            htmlBegin += "<option value =\"" + rnd[1] + "\">" + rnd[1] + "</option>\n";
+            htmlBegin += "<option value =\"" + rnd[2] + "\">" + rnd[2] + "</option>\n";
+            htmlBegin += "<option value =\"" + rnd[3] + "\">" + rnd[3] + "</option>\n";
             htmlBegin += "</select><br>\n";
             counter++;
         }
@@ -211,6 +227,7 @@ public class GameController {
         String scoreBoard = "";
         if (!playerRepository.existsById(username)) return "PLAYER " + username + " DOES NOT EXIST";
         Player p = playerRepository.findById(username).get();
+
         //Display the users name on the scoreboard
         scoreBoard += "PLAYER: " + username + "<br>";
         //Get a list of all the questions
@@ -245,6 +262,24 @@ public class GameController {
 
         scoreBoard += "TOTAL SCORE: " + score + "<br>";
         return scoreBoard;
+    }
+
+    @GetMapping("/playerscore/{gameID}")
+    public List<Player> getPlayersList(@PathVariable("gameID") int gameID){
+        return playerRepository.getPlayersByGame(gameID);
+    }
+
+    @GetMapping("/isDone")
+    public String isDone(@CookieValue("gameID") int gameID){
+        List<Player> playerList = playerRepository.getPlayersByNotDone(gameID);
+
+        String check = (playerList.isEmpty()) ? ("DONE") : ("STILL WAITING ON ");
+
+        for(Player p: playerList){
+            check += p.getPlayerID() + " ";
+        }
+
+        return check;
     }
     //Delete all questions for games that are finished
 

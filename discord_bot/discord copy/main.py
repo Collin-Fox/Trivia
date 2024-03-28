@@ -5,9 +5,6 @@ import discord
 from dotenv import load_dotenv
 from discord import Intents, Client, Message
 from responses import get_response, talk, picture, sports, speak
-from random import choice, randint
-from trivia import generate_question, answer_similarity
-from triviaData import wrt
 from TriviaTest import getScripts, startTrivia
 import openai
 
@@ -172,14 +169,14 @@ async def playTrivia(message: Message):
                                                                                      "answer.")
         script.append(questionScript)
 
-    for i in range(0, 5):
-        print(script[i])
-        speak(script[i], i)
-        await speakTrivia(message, script[i], i)
+  #  for i in range(0, 5):
+   #     print(script[i])
+    #    speak(script[i], i)
+     #   await speakTrivia(message, script[i], i)
 
-    #  print(script[0])
-    #  speak(script[0], 0)
-    #  await speakTrivia(message, script[0], 0)
+    print(script[0])
+    speak(script[0], 0)
+    await speakTrivia(message, script[0], 0)
 
     #  print(script[1], 1)
     #  speak(script[1], 1)

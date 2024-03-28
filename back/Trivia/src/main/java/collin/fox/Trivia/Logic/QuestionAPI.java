@@ -18,17 +18,6 @@ import java.util.List;
 
 public class QuestionAPI {
 
-//    {"category":"music",
-//    "id":"622a1c357cc59eab6f94fe75",
-//    "correctAnswer":"Lady Gaga",
-//    "incorrectAnswers":["Hikaru Utada","Drake","Madonna"],
-//    "question":{"text":"Which American singer, songwriter, and actress released the song 'Paparazzi'?"},
-//    "tags":["musicians","songs","music"],
-//    "type":"text_choice",
-//    "difficulty":"medium",
-//    "regions":[],
-//    "isNiche":false}
-
     public QuestionAPI() throws MalformedURLException {
     }
 

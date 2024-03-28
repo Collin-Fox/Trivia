@@ -10,6 +10,8 @@ public class Player {
     private int GameID;
     private int Score;
 
+
+
     public Player() {
     }
 
@@ -42,4 +44,6 @@ public class Player {
     public void setScore(int score) {
         Score = score;
     }
+
+
 }
