@@ -175,6 +175,7 @@ public class GameController {
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <title>Login</title>\n" +
+                "<link rel=\"stylesheet\" href=\"test.css\">"+
                 "</head>\n" +
                 "<body>";
         htmlBegin += "<form id=\"submitForm\" action=\"submit.html\" method=\"get\">\n";
