@@ -90,6 +90,8 @@ public class GameController {
      * @return Shows the HTML form for the questions
      * @throws IOException
      */
+
+    @CrossOrigin("http://localhost:3000")
     @GetMapping("/gameForm.html")
     public ResponseEntity<String> showForm(@RequestParam String gameID, @RequestParam String name, HttpServletResponse response) throws IOException {
 

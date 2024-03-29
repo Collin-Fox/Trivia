@@ -23,6 +23,12 @@ public class TriviaApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/greeting-javaconfig").allowedOrigins("http://localhost:9000");
+				registry.addMapping("/greeting-javaconfig").allowedOrigins("http://localhost:3000");
+				registry.addMapping("/**")
+						.allowedOrigins("*")
+						.allowedMethods("*")
+						.allowedHeaders("*")
+						.allowCredentials(false).maxAge(3600);
 			}
 		};
 	}
